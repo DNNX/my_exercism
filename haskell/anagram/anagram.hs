@@ -4,7 +4,7 @@ import Data.List (sort)
 import Data.Char (toLower)
     
 anagramsFor :: String -> [String] -> [String]
-anagramsFor str = filter (\s -> s `isAnagramOf` str)
+anagramsFor str = filter (isAnagramOf str)
           
 isAnagramOf :: String -> String -> Bool
 isAnagramOf a b | length b /= length a = False
