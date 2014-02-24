@@ -5,8 +5,9 @@ import qualified Data.Map as M
     
 count :: Char -> String -> Int
 count c s | isNucleotides c = fromMaybe 0 $ M.lookup c (nucleotideCounts s)
-count c _ = error $ "invalid nucleotide '" ++ [c] ++ "'"
+          | otherwise       = error $ "invalid nucleotide " ++ show c
 
+isNucleotides :: Char -> Bool
 isNucleotides = (flip elem) "ACGTU"
 
 nucleotideCounts :: String -> M.Map Char Int

@@ -4,10 +4,10 @@ import Data.List (sort)
 import Data.Char (toLower)
     
 anagramsFor :: String -> [String] -> [String]
-anagramsFor str = filter (isAnagramOf str)
-          
-isAnagramOf :: String -> String -> Bool
-isAnagramOf a b | length b /= length a = False
-                | a == b               = False
-                | otherwise = f a == f b
-                              where f = sort . map toLower
+anagramsFor str = filter isAnagram
+                  where f           = sort . map toLower
+                        canonical   = f str
+                        len         = length str
+                        isAnagram s | length s /= len = False
+                                    | s == str        = False
+                                    | otherwise       = canonical == f s
