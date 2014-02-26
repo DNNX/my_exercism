@@ -1,24 +1,22 @@
 module School (add, empty, sorted, grade, School) where
 
-import qualified Data.Map as M
+import qualified Data.HashMap.Strict as M
+import qualified Data.Set as S
 import           Data.Function (on)
-import           Data.List (sortBy, sort)
+import           Data.List (sortBy)
 
 type Student = String
 type Grade   = Int
-newtype School = School (M.Map Grade [Student]) deriving (Show, Eq)
+type School = M.HashMap Grade (S.Set Student)
 
 add :: Grade -> Student -> School -> School
-add g s (School m) = School (M.alter f g m)
-                     where f value = case value of 
-                                     Just students -> Just (s:students)
-                                     Nothing       -> Just [s]
+add grade student school = M.insertWith S.union grade (S.singleton student) school
 
 sorted :: School -> [(Grade, [Student])]
-sorted (School m) = map (\(g,s) -> (g, sort s)) $ sortBy (compare `on` fst) $ M.assocs m
+sorted = sortBy (compare `on` fst) . M.toList . M.map S.toList
 
 grade :: Grade -> School -> [Student]
-grade g (School m) = sort $ M.findWithDefault [] g m
+grade g school = S.toList $ M.lookupDefault S.empty g school
 
 empty :: School
-empty = School M.empty
+empty = M.empty
