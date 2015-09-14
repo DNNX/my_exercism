@@ -1,10 +1,9 @@
 module DNA (count, nucleotideCounts) where
 
-import           Data.Maybe (fromMaybe)
 import qualified Data.Map as M    
     
 count :: Char -> String -> Int
-count c s | isNucleotides c = fromMaybe 0 $ M.lookup c (nucleotideCounts s)
+count c s | isNucleotides c = M.findWithDefault 0 c (nucleotideCounts s)
           | otherwise       = error $ "invalid nucleotide " ++ show c
 
 isNucleotides :: Char -> Bool
